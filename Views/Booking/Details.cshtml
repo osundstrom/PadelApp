@@ -20,13 +20,15 @@
             @Html.DisplayNameFor(model => model.Court)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Court.CourtName)
+            @(Model.Court != null ? Model.Court.CourtName : "Ingen bana") -
+             @(Model.Court != null ? Model.Court.CourtType : "")
+        </dd>
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.User)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Id)
+            @(Model.User != null ? Model.User.UserName : "Ingen användare")
         </dd>
     </dl>
 </div>

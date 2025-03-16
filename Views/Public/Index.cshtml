@@ -1,0 +1,57 @@
+@model List<PadelserviceApp.Models.PadelCourt>
+
+@{
+    ViewData["Title"] = "Lediga Banor";
+    var oneDate = ViewData["oneDate"] as DateTime?;
+}
+
+<h1>Lediga Banor</h1>
+
+@{
+    var errorMedd = TempData["ErrorMedd"] as string;
+}
+
+@if (!string.IsNullOrEmpty(errorMedd))
+{
+    <div class="alert alert-danger">
+        @errorMedd
+    </div>
+}
+
+<form method="get">
+    <label for="oneDate">Välj datum:</label>
+    <input type="date" id="oneDate" name="date" value="@oneDate?.ToString("yyyy-MM-dd")" />
+    <button type="submit" class="btn btn-primary">Sök</button>
+</form>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Banans Namn</th>
+                <th>Typ</th>
+                <th>Lediga tider</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var court in Model)
+            {
+                <tr>
+                    <td>@court.CourtName</td>
+                    <td>@court.CourtType</td>
+                    <td>
+                       
+                        <a asp-action="AvailableTimes" asp-route-courtId="@court.CourtId" asp-route-date="@oneDate?.ToString("yyyy-MM-dd")" class="btn btn-primary">
+                            Lediga tider
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Inga lediga banor hittades för det valda datumet.</p>
+}

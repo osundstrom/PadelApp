@@ -40,6 +40,11 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+app.MapControllerRoute(
+    name: "public",
+    pattern: "public/{action=Index}/{id?}",
+    defaults: new { controller = "Public" }); 
+
 app.MapRazorPages()
    .WithStaticAssets();
 

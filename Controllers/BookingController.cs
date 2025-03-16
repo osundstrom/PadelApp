@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,8 @@ using PadelApp.Data;
 using PadelserviceApp.Models;
 
 namespace PadelApp.Controllers
-{
+{   
+    [Authorize]
     public class BookingController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -25,6 +27,7 @@ namespace PadelApp.Controllers
 //---------------------------------------------------------------------------------------------//
 
         // GET: Booking
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.PadelBookings.Include(p => p.Court).Include(p => p.User);
@@ -55,7 +58,7 @@ namespace PadelApp.Controllers
         public IActionResult Create()
         {
             ViewData["CourtId"] = new SelectList(_context.PadelCourts, "CourtId", "CourtName");
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            //ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -68,6 +71,7 @@ namespace PadelApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 _context.Add(padelBooking);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -91,7 +95,8 @@ namespace PadelApp.Controllers
                 return NotFound();
             }
             ViewData["CourtId"] = new SelectList(_context.PadelCourts, "CourtId", "CourtName", padelBooking.CourtId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", padelBooking.UserId);
+            //ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", padelBooking.UserId);
+            ViewData["UserId"] = padelBooking.UserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             return View(padelBooking);
         }
 

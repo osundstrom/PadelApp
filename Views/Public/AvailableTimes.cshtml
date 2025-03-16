@@ -1,0 +1,62 @@
+@model List<DateTime>
+
+@{
+    ViewData["Title"] = "Boka bana";
+    var court = ViewData["Court"] as PadelserviceApp.Models.PadelCourt;
+    var oneDate = ViewData["oneDate"] as DateTime?;
+}
+
+<h1>Tider för :@court?.CourtName</h1>
+
+@{
+    var errorMedd = TempData["ErrorMedd"] as string;
+}
+
+@if (!string.IsNullOrEmpty(errorMedd))
+{
+    <div class="alert alert-danger">
+        @errorMedd
+    </div>
+}
+
+<form method="get">
+    <label for="oneDate">Välj datum:</label>
+    <input type="date" id="oneDate" name="date" value="@oneDate?.ToString("yyyy-MM-dd")" />
+    <input type="hidden" name="courtId" value="@court?.CourtId" />
+    <button type="submit" class="btn btn-primary">Sök</button>
+</form>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tid</th>
+                <th>Handling</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var time in Model)
+            {
+                var Booked = court?.Booking?.Any(b => b.BookingTime.Date == time.Date && b.BookingTime.Hour == time.Hour) ?? false;
+                <tr>
+                    <td>@time.ToString("HH:mm")</td>
+                    <td>
+                        
+                        @if(Booked){
+                            <button class="btn btn-danger" disabled> Bokad</button>
+                        }else {
+                        <a asp-action="BookCourt" asp-route-courtId="@court?.CourtId" asp-route-date="@time" class="btn btn-success">
+                            Boka @time.ToString("HH:mm")
+                        </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Inga lediga tider finns: @oneDate?.ToString("yyyy-MM-dd")</p>
+}

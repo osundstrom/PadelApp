@@ -31,10 +31,13 @@
                 @Html.DisplayFor(modelItem => item.BookingTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Court.CourtName)
+                 @(item.Court != null ? item.Court.CourtName : "Ingen bana") -
+                 @(item.Court != null ? item.Court.CourtType : "")
+                
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
+                 @(item.User != null ? item.User.UserName : "Ingen bana")
+                
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.BookingId">Edit</a> |

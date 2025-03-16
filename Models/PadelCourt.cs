@@ -12,7 +12,7 @@ namespace PadelserviceApp.Models
     public string? CourtName { get; set; } 
 
     [Required]
-    public string? CourtType { get; set; } 
+    public string? CourtType { get; set; }
 
     [Required]
     public ICollection<PadelBooking> Booking { get; set; } = new List<PadelBooking>();
