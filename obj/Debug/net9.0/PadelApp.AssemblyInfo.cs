@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PadelApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dfab2f9f8ee80d9cdb082b41f3737eaf51e537c0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2184e8ba322eeb945adead46d99153cc4df87c87")]
 [assembly: System.Reflection.AssemblyProductAttribute("PadelApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PadelApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

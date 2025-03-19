@@ -23,7 +23,8 @@
     <input type="date" id="oneDate" name="date" value="@oneDate?.ToString("yyyy-MM-dd")" />
     <button type="submit" class="btn btn-primary">Sök</button>
 </form>
-
+@if (oneDate.HasValue)
+{
 @if (Model.Any())
 {
     <table class="table">
@@ -54,4 +55,5 @@
 else
 {
     <p>Inga lediga banor hittades för det valda datumet.</p>
+}
 }
