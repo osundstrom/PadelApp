@@ -11,8 +11,8 @@ using PadelApp.Data;
 namespace PadelApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250315213356_padel")]
-    partial class padel
+    [Migration("20250319180910_initialCreate")]
+    partial class initialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
