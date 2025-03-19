@@ -15,7 +15,7 @@ public class PublicController : Controller
     }
 
     [AllowAnonymous] //tillgänglig ej inloggad
-    public IActionResult Index(DateTime? date)
+    public IActionResult Booking(DateTime? date)
     {   
         //Hämtar alla banor samt deras tider
         var courts = _context.PadelCourts.Include(c => c.Booking)
@@ -25,6 +25,13 @@ public class PublicController : Controller
         //viewData med valt datum.
         ViewData["oneDate"] = date;
         return View(courts);
+    }
+
+    [AllowAnonymous] //ej inloggad
+    public IActionResult Index()
+    {
+        
+        return View();
     }
 
     [HttpGet]

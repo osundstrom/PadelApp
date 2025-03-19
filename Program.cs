@@ -37,13 +37,9 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=public}/{action=Index}/{id?}")
     .WithStaticAssets();
 
-app.MapControllerRoute(
-    name: "public",
-    pattern: "public/{action=Index}/{id?}",
-    defaults: new { controller = "Public" }); 
 
 app.MapRazorPages()
    .WithStaticAssets();
