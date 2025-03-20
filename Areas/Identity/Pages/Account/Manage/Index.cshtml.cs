@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using PadelApp.Data; 
+using PadelserviceApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace PadelApp.Areas.Identity.Pages.Account.Manage
 {
@@ -17,12 +20,16 @@ namespace PadelApp.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
+        private readonly ApplicationDbContext _context;
+
         public IndexModel(
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         /// <summary>
@@ -44,6 +51,8 @@ namespace PadelApp.Areas.Identity.Pages.Account.Manage
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
+
+        public List<PadelBooking> Bookings { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -72,7 +81,7 @@ namespace PadelApp.Areas.Identity.Pages.Account.Manage
                 PhoneNumber = phoneNumber
             };
         }
-
+    
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -80,6 +89,14 @@ namespace PadelApp.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+
+             var userId = user.Id;
+
+            Bookings = await _context.PadelBookings
+                .Where(b => b.UserId == userId)
+                .Include(b => b.Court)  
+                .Include(b => b.User)   
+                .ToListAsync();
 
             await LoadAsync(user);
             return Page();

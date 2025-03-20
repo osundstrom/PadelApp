@@ -30,14 +30,16 @@ namespace PadelApp.Controllers
         [Authorize]
         public async Task<IActionResult> Index(){
 
-        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+       
 
 
             var applicationDbContext = _context.PadelBookings
-            .Where(b => b.UserId == userId)
             .Include(p => p.Court)
             .Include(p => p.User);
-            return View(await applicationDbContext.ToListAsync());
+
+            var bookings = await applicationDbContext.ToListAsync();
+
+            return View(bookings);
         }
 
 

@@ -1,13 +1,41 @@
 ﻿@page
-@model IndexModel
+@using PadelserviceApp.Models;
+@model PadelApp.Areas.Identity.Pages.Account.Manage.IndexModel
+
 @{
     Layout = "/Views/Shared/_ManageLayout.cshtml";
     ViewData["Title"] = "Bokade tider";
-    ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
 <h1>@ViewData["Title"]</h1>
-<div class="row">
+
+<div class="container">
+
+    @if (Model.Bookings != null && Model.Bookings.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Datum och tid</th>
+                    <th>Bana</th>
+                    <th>Typ</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var booking in Model.Bookings){
+                    <tr>
+                        <td>@($"{booking.BookingTime:yyyy-MM-dd, HH:mm} - {booking.BookingTime.AddHours(1):HH:mm}")</td>
+                        <td>@booking.Court?.CourtName</td> 
+                        <td>@booking.Court?.CourtType</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No bookings found.</p>
+    }
 </div>
 
 @section Scripts {
