@@ -19,6 +19,7 @@
                     <th>Datum och tid</th>
                     <th>Bana</th>
                     <th>Typ</th>
+                    <th>@(Model.AdminCheck ? "Användare" : "")</th>
                     <th></th>
                 </tr>
             </thead>
@@ -28,6 +29,12 @@
                         <td>@($"{booking.BookingTime:yyyy-MM-dd, HH:mm} - {booking.BookingTime.AddHours(1):HH:mm}")</td>
                         <td>@booking.Court?.CourtName</td> 
                         <td>@booking.Court?.CourtType</td>
+
+                        <td>
+                        @if (Model.AdminCheck){
+                        <span>@booking.User?.UserName</span> }
+                        
+                        </td>
                         <td>
                         <form method="post" asp-page-handler="Delete" asp-route-id="@booking.BookingId">
                             <button type="submit" class="btn btn-danger">&#128465;</button>

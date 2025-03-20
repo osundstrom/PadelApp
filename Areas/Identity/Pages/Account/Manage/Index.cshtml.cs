@@ -34,8 +34,10 @@ namespace PadelApp.Areas.Identity.Pages.Account.Manage
         }
 
    
+  //-------------------------Get--------------------------------------------//
 
         public List<PadelBooking> Bookings { get; set; }
+        public bool AdminCheck { get; set; }
 
      
         public async Task<IActionResult> OnGetAsync()
@@ -45,19 +47,27 @@ namespace PadelApp.Areas.Identity.Pages.Account.Manage
                 return NotFound();
             }
 
-             
-
+        
+        AdminCheck = await _userManager.IsInRoleAsync(user, "Admin");
+        if (AdminCheck){
+        Bookings = await _context.PadelBookings
+            .Include(b => b.Court)  
+            .Include(b => b.User)   
+            .ToListAsync();
+            return Page();
+            }
+        if(!AdminCheck) {
             Bookings = await _context.PadelBookings
                 .Where(b => b.UserId == user.Id)
                 .Include(b => b.Court)  
                 .Include(b => b.User)   
                 .ToListAsync();
-
-            
+                return Page();
+            }
             return Page();
         }
 
-        
+  //-------------------------delete--------------------------------------------//
         public async Task<IActionResult> OnPostDeleteAsync(int? id){
 
         var user = await _userManager.GetUserAsync(User);
@@ -76,6 +86,9 @@ namespace PadelApp.Areas.Identity.Pages.Account.Manage
 
             return RedirectToPage();
         }
+
+
+
 
     }
 }
