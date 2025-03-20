@@ -27,7 +27,7 @@ namespace PadelApp.Controllers
 //---------------------------------------------------------------------------------------------//
 
         // GET: Booking
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(){
 
        
@@ -47,6 +47,7 @@ namespace PadelApp.Controllers
         
 
         // GET: Booking/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -67,6 +68,7 @@ namespace PadelApp.Controllers
         }
 
         // GET: Booking/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["CourtId"] = new SelectList(_context.PadelCourts, "CourtId", "CourtName");
@@ -94,6 +96,7 @@ namespace PadelApp.Controllers
         }
 
         // GET: Booking/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -113,8 +116,7 @@ namespace PadelApp.Controllers
         }
 
         // POST: Booking/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("BookingId,BookingTime,CourtId,UserId")] PadelBooking padelBooking)
@@ -150,6 +152,7 @@ namespace PadelApp.Controllers
         }
 
         // GET: Booking/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -170,6 +173,7 @@ namespace PadelApp.Controllers
         }
 
         // POST: Booking/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

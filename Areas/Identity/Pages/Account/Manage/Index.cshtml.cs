@@ -11,9 +11,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using PadelApp.Data; 
 using PadelserviceApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PadelApp.Areas.Identity.Pages.Account.Manage
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -39,21 +41,40 @@ namespace PadelApp.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            if (user == null){
+                return NotFound();
             }
 
-             var userId = user.Id;
+             
 
             Bookings = await _context.PadelBookings
-                .Where(b => b.UserId == userId)
+                .Where(b => b.UserId == user.Id)
                 .Include(b => b.Court)  
                 .Include(b => b.User)   
                 .ToListAsync();
 
             
             return Page();
+        }
+
+        
+        public async Task<IActionResult> OnPostDeleteAsync(int? id){
+
+        var user = await _userManager.GetUserAsync(User);
+           
+        if (user == null){
+            return NotFound();
+        }
+
+        var Booking = await _context.PadelBookings
+            .Where(b => b.UserId == user.Id)
+            .Include(p => p.User)
+            .FirstOrDefaultAsync(m => m.BookingId == id);
+
+            _context.PadelBookings.Remove(Booking);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage();
         }
 
     }
