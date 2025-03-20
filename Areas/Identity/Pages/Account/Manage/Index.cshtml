@@ -21,6 +21,7 @@
                     <th>Typ</th>
                     <th>@(Model.AdminCheck ? "Användare" : "")</th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -33,13 +34,18 @@
                         <td>
                         @if (Model.AdminCheck){
                         <span>@booking.User?.UserName</span> }
-                        
+                        </td>
+                        <td>
+                        @if (Model.AdminCheck){
+                                <span><a asp-controller="Booking" asp-action="Edit" asp-route-id="@booking.BookingId" class="btn btn-warning">Edit</a></span>
+                                }
                         </td>
                         <td>
                         <form method="post" asp-page-handler="Delete" asp-route-id="@booking.BookingId">
-                            <button type="submit" class="btn btn-danger">&#128465;</button>
+                            <button type="submit" class="btn btn-danger">Avboka</button>
                         </form>
                         </td>
+                        
                     </tr>
                 }
             </tbody>
