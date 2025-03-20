@@ -76,19 +76,27 @@ namespace PadelApp.Areas.Identity.Pages.Account.Manage
             return NotFound();
         }
 
-        var Booking = await _context.PadelBookings
+        AdminCheck = await _userManager.IsInRoleAsync(user, "Admin");
+        if(AdminCheck) {
+            var Booking = await _context.PadelBookings
+            .Include(p => p.User)
+            .FirstOrDefaultAsync(m => m.BookingId == id);
+            _context.PadelBookings.Remove(Booking);
+            await _context.SaveChangesAsync();
+            return RedirectToPage();
+        }
+        if(!AdminCheck){
+            var Booking = await _context.PadelBookings
             .Where(b => b.UserId == user.Id)
             .Include(p => p.User)
             .FirstOrDefaultAsync(m => m.BookingId == id);
-
             _context.PadelBookings.Remove(Booking);
             await _context.SaveChangesAsync();
-
-            return RedirectToPage();
         }
+         return RedirectToPage();
 
-
-
+            
+        }
 
     }
 }
