@@ -1,5 +1,6 @@
 ﻿.imgHeader{
   height: 15vh;
+  margin-bottom: 2vh;
   width: 100vw;
   border-image-repeat: none;
   object-fit: cover;
