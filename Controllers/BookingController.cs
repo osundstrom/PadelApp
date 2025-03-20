@@ -27,12 +27,22 @@ namespace PadelApp.Controllers
 //---------------------------------------------------------------------------------------------//
 
         // GET: Booking
-        [AllowAnonymous]
-        public async Task<IActionResult> Index()
-        {
-            var applicationDbContext = _context.PadelBookings.Include(p => p.Court).Include(p => p.User);
+        [Authorize]
+        public async Task<IActionResult> Index(){
+
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+
+            var applicationDbContext = _context.PadelBookings
+            .Where(b => b.UserId == userId)
+            .Include(p => p.Court)
+            .Include(p => p.User);
             return View(await applicationDbContext.ToListAsync());
         }
+
+
+
+        
 
         // GET: Booking/Details/5
         public async Task<IActionResult> Details(int? id)
