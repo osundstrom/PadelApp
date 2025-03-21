@@ -1,43 +1,48 @@
 ﻿@page
 @using PadelserviceApp.Models;
-@model PadelApp.Areas.Identity.Pages.Account.Manage.IndexModel
+@model IndexModel
 
 
 
 @{
+    // Layout för profil (manage)
     Layout = "/Views/Shared/_ManageLayout.cshtml";
-    ViewData["Title"] = "Bokade tider";
+    ViewData["Title"] = "Bokade tider"; //title
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<div class="container">
-
-    @if (Model.Bookings != null && Model.Bookings.Any())
-    {
+<div class="container-fluid">
+    
+<!-- Visar bokningar, olika beronde admin eller ej -->
+    @if (Model.Bookings != null && Model.Bookings.Any()){
+         <div class="table-responsive" id="tableDiv">
         <table class="table">
             <thead>
                 <tr>
                     <th>Datum och tid</th>
                     <th>Bana</th>
                     <th>Typ</th>
-                    <th>@(Model.AdminCheck ? "Användare" : "")</th>
+                    <!-- Om admin, visas användare-->
+                    <th>@(Model.AdminCheck ? "Användare" : "")</th> 
                     <th></th>
                     <th></th>
                 </tr>
-            </thead>
+            </thead>    
             <tbody>
                 @foreach (var booking in Model.Bookings){
                     <tr>
-                        <td>@($"{booking.BookingTime:yyyy-MM-dd, HH:mm} - {booking.BookingTime.AddHours(1):HH:mm}")</td>
+                        <td>@($"{booking.BookingTime.Day}/{booking.BookingTime.Month} {booking.BookingTime:HH:mm} - {booking.BookingTime.AddHours(1):HH:mm}")</td>
                         <td>@booking.Court?.CourtName</td> 
                         <td>@booking.Court?.CourtType</td>
 
                         <td>
+                            <!-- Om admin, visas användare-->
                         @if (Model.AdminCheck){
                         <span>@booking.User?.UserName</span> }
                         </td>
                         <td>
+                            <!-- Om admin, Edit knapp-->
                         @if (Model.AdminCheck){
                                 <span><a asp-controller="Booking" asp-action="Edit" asp-route-id="@booking.BookingId" class="btn btn-warning">Ändra</a></span>
                                 }
@@ -52,6 +57,7 @@
                 }
             </tbody>
         </table>
+         </div>
     }
     else
     {
@@ -59,6 +65,3 @@
     }
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

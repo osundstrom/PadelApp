@@ -11,7 +11,7 @@ using PadelserviceApp.Models;
 
 namespace PadelApp.Controllers
 {   
-    [Authorize]
+    [Authorize]//inloggad
     public class BookingController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -29,26 +29,6 @@ namespace PadelApp.Controllers
             return View("~/Views/Public/Booking.cshtml");
         }
 
-        //---------------------------------------------------------------------------------------------//
-
-
-        // GET: Booking
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Index(){
-
-       
-
-
-            var applicationDbContext = _context.PadelBookings
-            .Include(p => p.Court)
-            .Include(p => p.User);
-
-            var bookings = await applicationDbContext.ToListAsync();
-            
-            
-            return View(bookings);
-        }
-        
 //-----------------------------------Edit använder-------------------------------------------//
         // GET: Booking/Edit/5
         [Authorize(Roles = "Admin")] //måset admin
@@ -57,7 +37,7 @@ namespace PadelApp.Controllers
         //bokning med id
         var padelBooking = await _context.PadelBookings.FindAsync(id);
 
-        if(padelBooking == null) {
+        if(padelBooking == null) { //om ej finns
             return NotFound();
         }
    
@@ -67,9 +47,9 @@ namespace PadelApp.Controllers
             CourtId = c.CourtId, //banans id
             CourtDisplay = $"{c.CourtName} ({c.CourtType})" //banans namn och typ
         })
-        .ToList();
+        .ToList();//lista, ska visas dropdown.
             
-            //sätter  viewData
+            //sätter  viewData, ska till edit.
             ViewData["CourtId"] = new SelectList(courts, "CourtId", "CourtDisplay", padelBooking.CourtId);
             ViewData["UserId"] = padelBooking.UserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             return View(padelBooking);
@@ -79,26 +59,29 @@ namespace PadelApp.Controllers
         [Authorize(Roles = "Admin")] //måste admin
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BookingId,BookingTime,CourtId,UserId")] PadelBooking padelBooking)
-        {
-            if (id != padelBooking.BookingId)
-            {
+        public async Task<IActionResult> Edit(int id, [Bind("BookingId,BookingTime,CourtId,UserId")] PadelBooking padelBooking){
+            
+            //Om id är annorlunda
+            if (id != padelBooking.BookingId){
                 return NotFound();
             }
 
-            var existingBooking = await _context.PadelBookings.AsNoTracking().FirstOrDefaultAsync(b => b.BookingId == id);
-        if (existingBooking == null)
-        {
-        return NotFound();
-     }
+            //hämta existerande 
+            var existingBooking = await _context.PadelBookings
+            .AsNoTracking()
+            .FirstOrDefaultAsync(b => b.BookingId == id);
 
-    
-    padelBooking.UserId = existingBooking.UserId;
+            if (existingBooking == null){ //om ej finns
+            return NotFound();
+            }
+
+            //gamla boknings använde ska ej ändras
+            padelBooking.UserId = existingBooking.UserId;
 
             if (ModelState.IsValid){
                 try{
 
-                    _context.Update(padelBooking);
+                    _context.Update(padelBooking); //uppdatera och spara
                      _context.Entry(padelBooking).Property(b => b.BookingTime).IsModified = true; 
                     _context.Entry(padelBooking).Property(b => b.CourtId).IsModified = true;  
                     await _context.SaveChangesAsync();
@@ -111,8 +94,9 @@ namespace PadelApp.Controllers
 
                 }
 
-            return Redirect("/Identity/Account/Manage");  
+            return Redirect("/Identity/Account/Manage"); //tillbaka till manage
             }
+            //viewdata
             ViewData["CourtId"] = new SelectList(_context.PadelCourts, "CourtId", "CourtName", padelBooking.CourtId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", padelBooking.UserId);
 
@@ -120,7 +104,9 @@ namespace PadelApp.Controllers
         }
 
         //----------------------------------------------------------------------------------//
-        private bool PadelBookingExists(int id)
+
+        //bool för kolla om bokningen finns eller ej
+        public bool PadelBookingExists(int id) 
         {
             return _context.PadelBookings.Any(e => e.BookingId == id);
         }

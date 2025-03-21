@@ -3,8 +3,8 @@
 @inject UserManager<IdentityUser> UserManager
 
 <ul class="navbar-nav ms-auto d-flex flex-row align-items-center ">
-@if (SignInManager.IsSignedIn(User))
-{
+    <!-- Om inloggad -->
+@if (SignInManager.IsSignedIn(User)){
     
     <li class="nav-item">
         <a  class="btn btn-success me-2" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Profil</a>
@@ -16,8 +16,8 @@
     </li>
     
 }
-else
-{
+ <!-- Om ej inloggad -->
+else{
     
     <li class="nav-item">
         <a class="btn btn-secondary me-2" asp-area="Identity" asp-page="/Account/Register">Registrera</a>

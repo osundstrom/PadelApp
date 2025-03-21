@@ -8,26 +8,28 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+         <!--redigera bokning -->
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
-           
+           <!--hidden method bookingId, så det ej ändras-->
             <input type="hidden" asp-for="BookingId" />
 
+            <!--bokningstid -->
             <div class="form-group">
                 <label asp-for="BookingTime" class="control-label"></label>
                 <input asp-for="BookingTime" class="form-control">
                 <span asp-validation-for="BookingTime" class="text-danger"></span>
             </div>
 
-            
+            <!--Bana-->
             <div class="form-group">
                 <label asp-for="CourtId" class="control-label"></label>
                 <select asp-for="CourtId" class="form-control" asp-items="@(ViewData["CourtId"] as SelectList)"></select>
                 <span asp-validation-for="CourtId" class="text-danger"></span>
             </div>
 
-           
+           <!--hidden, userId -->
             <input type="hidden" asp-for="UserId" value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" >
 
            

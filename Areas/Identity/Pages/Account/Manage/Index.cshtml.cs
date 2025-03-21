@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace PadelApp.Areas.Identity.Pages.Account.Manage
 {
-    [Authorize]
+    [Authorize]//inloggad
     public class IndexModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -28,27 +28,29 @@ namespace PadelApp.Areas.Identity.Pages.Account.Manage
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
-             PadelBooking = new PadelBooking();
+             PadelBooking = new PadelBooking(); //PadelBooking
              
         }
 
    
+
+        public bool AdminCheck { get; set; } //kontrollea admin
+
+         DateTime sortDate = DateTime.Today; //dagen datum
+
   //-------------------------Get(båda)--------------------------------------------//
+        public async Task<IActionResult> OnGetAsync(){
 
-        public bool AdminCheck { get; set; }
+            var user = await _userManager.GetUserAsync(User); //användare
 
-         DateTime sortDate = DateTime.Today;
-     
-        public async Task<IActionResult> OnGetAsync()
-        {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null){
+            if (user == null){ //om ingen användare
                 return NotFound();
             }
 
-        
+        //kollar om inloggad är admin
         AdminCheck = await _userManager.IsInRoleAsync(user, "Admin");
-        if (AdminCheck){
+
+        if (AdminCheck){ //om är admin hämtas allas tider
         Bookings = await _context.PadelBookings //bara tider från idag och framåt
             .Where(b => b.BookingTime >= sortDate) 
             .Include(b => b.Court)  
@@ -56,11 +58,11 @@ namespace PadelApp.Areas.Identity.Pages.Account.Manage
             .ToListAsync();
             return Page();
             }
-        if(!AdminCheck) {
+        if(!AdminCheck) { //om ej admin hämtas endast den användarens tider
             Bookings = await _context.PadelBookings
                 .Where(b => b.UserId == user.Id  && b.BookingTime >= sortDate) //bara tider från idag och framåt och samma användare
                 .Include(b => b.Court)  
-                .Include(b => b.User)   
+                .Include(b => b.User)  
                 .ToListAsync();
                 return Page();
             }
@@ -70,39 +72,42 @@ namespace PadelApp.Areas.Identity.Pages.Account.Manage
   //-------------------------delete(båda)--------------------------------------------//
         public async Task<IActionResult> OnPostDeleteAsync(int? id){
 
-        var user = await _userManager.GetUserAsync(User);
+        var user = await _userManager.GetUserAsync(User); //användare
            
-        if (user == null){
+        if (user == null){ //om ej finns
             return NotFound();
         }
+        
+        //kollar om inloggad är admin
+        AdminCheck = await _userManager.IsInRoleAsync(user, "Admin"); 
 
-        AdminCheck = await _userManager.IsInRoleAsync(user, "Admin");
-        if(AdminCheck) {
+        if(AdminCheck) {//om admin så kan man radera allas, baserat på id.
             var Booking = await _context.PadelBookings
-            .Include(p => p.User)
-            .FirstOrDefaultAsync(m => m.BookingId == id);
+            .Include(p => p.User) 
+            .FirstOrDefaultAsync(m => m.BookingId == id); 
 
             if(Booking == null) {
                 return NotFound();
             }
-            _context.PadelBookings.Remove(Booking);
-            await _context.SaveChangesAsync();
+            _context.PadelBookings.Remove(Booking); //ta bort
+            await _context.SaveChangesAsync(); //spara
             return RedirectToPage();
         }
 
 
-        if(!AdminCheck){
+        if(!AdminCheck){ //om ej admin endast radera sina egna, 
             var Booking = await _context.PadelBookings
-            .Where(b => b.UserId == user.Id)
+            .Where(b => b.UserId == user.Id) //hämta endast sina egna
             .Include(p => p.User)
             .FirstOrDefaultAsync(m => m.BookingId == id);
 
             if(Booking == null) {
                 return NotFound();
             }
-            _context.PadelBookings.Remove(Booking);
-            await _context.SaveChangesAsync();
-        }
+
+            _context.PadelBookings.Remove(Booking);//ta bort
+            await _context.SaveChangesAsync(); //spara
+        } 
          return RedirectToPage();
 
             

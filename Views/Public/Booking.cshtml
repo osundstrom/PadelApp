@@ -3,30 +3,31 @@
 @{
     ViewData["Title"] = "Lediga Banor";
     var oneDate = ViewData["oneDate"] as DateTime?;
-}
-
-<h1>Lediga Banor</h1>
-
-@{
     var errorMedd = TempData["ErrorMedd"] as string;
 }
 
-@if (!string.IsNullOrEmpty(errorMedd))
-{
+<h1>@ViewData["Title"]</h1>
+
+
+@if (!string.IsNullOrEmpty(errorMedd)){
     <div class="alert alert-danger">
         @errorMedd
     </div>
 }
 
+<!-- Datum-->
 <form method="get">
     <label for="oneDate">Välj datum:</label>
     <input type="date" id="oneDate" name="date" value="@oneDate?.ToString("yyyy-MM-dd")" >
     <button type="submit" class="btn btn-primary">Sök</button>
 </form>
-@if (oneDate.HasValue)
+
+
+@if (oneDate.HasValue){ //om ett datum valts
+
+@if (Model.Any()) //tillgängliga banor det datumet
 {
-@if (Model.Any())
-{
+    //tabell över alla banor
     <table class="table">
         <thead>
             <tr>
@@ -36,8 +37,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var court in Model)
-            {
+            @foreach (var court in Model){<!--Loopa genom all banor-->
                 <tr>
                     <td>@court.CourtName</td>
                     <td>@court.CourtType</td>

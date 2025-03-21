@@ -1,4 +1,7 @@
-﻿.imgHeader{
+﻿
+
+
+.imgHeader{
   height: 15vh;
   margin-bottom: 2vh;
   width: 100vw;
@@ -13,6 +16,21 @@
   margin-top: 1vh;
 }
 
+footer li{
+  list-style: none;
+}
 
+footer ul{
+  margin-top: 1vh;
+}
 
+footer p{
+  float: right;
+}
+
+@media (max-width: 768px) {
+  #tableDiv{
+    font-size: smaller;
+  }
+}
 

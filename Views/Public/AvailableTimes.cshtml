@@ -6,28 +6,33 @@
     var oneDate = ViewData["oneDate"] as DateTime?;
 }
 
-<h1>Tider för :@court?.CourtName</h1>
+<h1>Tider för :@court?.CourtName</h1><!-- Bana -->
 
 @{
     var errorMedd = TempData["ErrorMedd"] as string;
 }
 
-@if (!string.IsNullOrEmpty(errorMedd))
+<!-- erromedd om ej tom-->
+@if (!string.IsNullOrEmpty(errorMedd)) 
 {
     <div class="alert alert-danger">
         @errorMedd
     </div>
 }
 
+<!--Välja ett datum -->
 <form method="get">
     <label for="oneDate">Välj datum:</label>
     <input type="date" id="oneDate" name="date" value="@oneDate?.ToString("yyyy-MM-dd")" />
-    <input type="hidden" name="courtId" value="@court?.CourtId" />
+    <input type="hidden" name="courtId" value="@court?.CourtId" /> <!--court id som hidden-->
     <button type="submit" class="btn btn-primary">Sök</button>
 </form>
 
+<!--om tillgängliga tider, utifrån datum valt-->
 @if (Model.Any())
 {
+
+     <!-- Tabell för alla tider-->
     <table class="table">
         <thead>
             <tr>
@@ -36,16 +41,15 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var time in Model)
-            {
+            @foreach (var time in Model){
                 var Booked = court?.Booking?.Any(b => b.BookingTime.Date == time.Date && b.BookingTime.Hour == time.Hour) ?? false;
                 <tr>
                     <td>@time.ToString("HH:mm")</td>
                     <td>
                         
-                        @if(Booked){
+                        @if(Booked){  <!-- om redan bokad, röd knapp, disabled -->
                             <button class="btn btn-danger" disabled> Bokad</button>
-                        }else {
+                        }else {  <!-- annars visas grön, klickbar-->
                         <a asp-action="BookCourt" asp-route-courtId="@court?.CourtId" asp-route-date="@time" class="btn btn-success">
                             Boka @time.ToString("HH:mm")
                         </a>
@@ -57,6 +61,6 @@
     </table>
 }
 else
-{
+{ //om de ej fanns tider
     <p>Inga lediga tider finns: @oneDate?.ToString("yyyy-MM-dd")</p>
 }

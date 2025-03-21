@@ -28,29 +28,27 @@ public class PublicController : Controller
     }
 
     [AllowAnonymous] //ej inloggad
-    public IActionResult Index()
-    {
+    public IActionResult Index(){
         
         return View();
     }
 
+
     [HttpGet]
     public IActionResult AvailableTimes(int courtId, DateTime? date)
     {   
-        //Visar banan tider.
+        //Visar banan och dess lediga tider, courtid
         var court = _context.PadelCourts
             .Include(c => c.Booking)
             .FirstOrDefault(c => c.CourtId == courtId);
 
         //om bana är null
-        if (court == null)
-        {
+        if (court == null){
             return NotFound();
         }
 
         //om datum är null
-        if (date == null)
-        {
+        if (date == null){
             return NotFound();
         }
 
@@ -58,9 +56,8 @@ public class PublicController : Controller
         ViewData["Court"] = court;
         ViewData["oneDate"] = date;
 
-        var availableTimes = new List<DateTime>();
-        var alreadyBooked =  new List<DateTime>();
-        var allTimes =  new List<DateTime>();
+       
+        var allTimes =  new List<DateTime>(); 
 
 
         //for loop för att displaya all tider. tider gåt att boka 9-22
@@ -82,14 +79,13 @@ public class PublicController : Controller
     [Authorize]//måste vara inloggad
     public async Task<IActionResult> BookCourt(int courtId, DateTime date)
     {
-        //hämtar banor och tider. 
+        //hämtar banan och dens tider 
         var court = await _context.PadelCourts
             .Include(c => c.Booking)
             .FirstOrDefaultAsync(c => c.CourtId == courtId);
 
-        //om banan är null
-        if (court == null)
-        {
+        //om banan ej finns
+        if (court == null){
              TempData["ErrorMedd"] = "Banan hittas inte";
              return RedirectToAction(nameof(Index));
         }
@@ -98,8 +94,8 @@ public class PublicController : Controller
 
         //Kollar om tiden är bokad
         if (court.Booking.Any(b => 
-        b.BookingTime.Date == date.Date && 
-        b.BookingTime.Hour == date.Hour))
+        b.BookingTime.Date == date.Date && //dag
+        b.BookingTime.Hour == date.Hour)) //timme
         {   
             return RedirectToAction(nameof(Index));
         }
@@ -107,14 +103,14 @@ public class PublicController : Controller
         //hämta userId
         var userID = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
-        var booking = new PadelBooking{
-            CourtId = courtId,
-            BookingTime = date,
-            UserId = userID
+        var booking = new PadelBooking{ //en bokning
+            CourtId = courtId, //bana
+            BookingTime = date, //datum
+            UserId = userID //användare
         };
 
-        _context.PadelBookings.Add(booking);
-        await _context.SaveChangesAsync();
+        _context.PadelBookings.Add(booking); //lägg till bokning
+        await _context.SaveChangesAsync(); //spara 
 
         return RedirectToAction(nameof(Index));
     }
