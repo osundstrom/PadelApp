@@ -1,6 +1,6 @@
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 
 WORKDIR /app
 
@@ -10,6 +10,8 @@ RUN dotnet restore
 
 
 COPY . ./
+
+
 RUN dotnet publish -c Release -o /out
 
 
@@ -18,7 +20,11 @@ WORKDIR /app
 EXPOSE 80
 
 
-COPY --from=build /out .
+COPY --from=build /out ./
+
+COPY wwwroot/Images /app/wwwroot/Images
+
+COPY PadelApp.db ./
 
 
 ENTRYPOINT ["dotnet", "PadelApp.dll"]

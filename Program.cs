@@ -19,11 +19,14 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
+app.Urls.Add("http://0.0.0.0:80");
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     await RoleAdmin(services);
 }
+
 
 
 if (app.Environment.IsDevelopment())
@@ -36,7 +39,7 @@ else
     
     app.UseHsts();
 }
-
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseRouting();
 
@@ -72,8 +75,14 @@ async Task RoleAdmin(IServiceProvider serviceProvider)
         var result = await userManager.CreateAsync(admin, adminPassword);
 
         if (result.Succeeded){
+
+            var adminExists = await roleManager.RoleExistsAsync("Admin");
+             if (!adminExists) {
+                await roleManager.CreateAsync(new IdentityRole("Admin"));
+             }
             await userManager.AddToRoleAsync(admin, "Admin");
-        }
+        }    
+
     }
 }
 //-----------------------------------------------------------------------------------//

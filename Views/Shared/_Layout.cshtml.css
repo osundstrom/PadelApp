@@ -6,7 +6,7 @@
   object-fit: cover;
   object-position: center;
   border-bottom: 1px solid black;
-  background-image: url(/images/PadelHeader.jpg);
+  background-image: url("/Images/PadelHeader.jpg")
 }
 
 #navHeader{
