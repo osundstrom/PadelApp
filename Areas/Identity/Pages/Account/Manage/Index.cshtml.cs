@@ -1,5 +1,3 @@
-
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,7 +5,6 @@ using PadelApp.Data;
 using PadelserviceApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace PadelApp.Areas.Identity.Pages.Account.Manage
 {
@@ -21,7 +18,7 @@ namespace PadelApp.Areas.Identity.Pages.Account.Manage
         public List<PadelBooking> Bookings { get; set; } = new List<PadelBooking>();
 
         //private readonly ILogger<IndexModel> _logger;
-         public PadelBooking? PadelBooking { get; set; }
+        public PadelBooking? PadelBooking { get; set; }
         public IndexModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,

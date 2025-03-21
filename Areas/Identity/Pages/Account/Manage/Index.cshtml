@@ -2,6 +2,8 @@
 @using PadelserviceApp.Models;
 @model PadelApp.Areas.Identity.Pages.Account.Manage.IndexModel
 
+
+
 @{
     Layout = "/Views/Shared/_ManageLayout.cshtml";
     ViewData["Title"] = "Bokade tider";
@@ -37,7 +39,7 @@
                         </td>
                         <td>
                         @if (Model.AdminCheck){
-                                <span><a asp-controller="Booking" asp-action="Edit" asp-route-id="@booking.BookingId" class="btn btn-warning">Edit</a></span>
+                                <span><a asp-controller="Booking" asp-action="Edit" asp-route-id="@booking.BookingId" class="btn btn-warning">Ändra</a></span>
                                 }
                         </td>
                         <td>

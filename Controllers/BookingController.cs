@@ -21,7 +21,15 @@ namespace PadelApp.Controllers
             _context = context;
         }
 
-//---------------------------------------------------------------------------------------------//
+        //så /booking går till public/Booking)
+        [Route("booking")]
+        [Authorize]
+        public IActionResult BookingPage()
+        {
+            return View("~/Views/Public/Booking.cshtml");
+        }
+
+        //---------------------------------------------------------------------------------------------//
 
 
         // GET: Booking
@@ -36,7 +44,8 @@ namespace PadelApp.Controllers
             .Include(p => p.User);
 
             var bookings = await applicationDbContext.ToListAsync();
-
+            
+            
             return View(bookings);
         }
         
@@ -86,30 +95,27 @@ namespace PadelApp.Controllers
     
     padelBooking.UserId = existingBooking.UserId;
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
+            if (ModelState.IsValid){
+                try{
+
                     _context.Update(padelBooking);
                      _context.Entry(padelBooking).Property(b => b.BookingTime).IsModified = true; 
                     _context.Entry(padelBooking).Property(b => b.CourtId).IsModified = true;  
                     await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
+
+                }catch (DbUpdateConcurrencyException)
                 {
-                    if (!PadelBookingExists(padelBooking.BookingId))
-                    {
-                        return NotFound();
+                    if (!PadelBookingExists(padelBooking.BookingId)){
+                    return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
                 }
-                return Redirect("/Identity/Account/Manage");  
+
+            return Redirect("/Identity/Account/Manage");  
             }
             ViewData["CourtId"] = new SelectList(_context.PadelCourts, "CourtId", "CourtName", padelBooking.CourtId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", padelBooking.UserId);
+
             return View(padelBooking);
         }
 
