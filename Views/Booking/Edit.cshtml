@@ -16,7 +16,7 @@
 
             <div class="form-group">
                 <label asp-for="BookingTime" class="control-label"></label>
-                <input asp-for="BookingTime" class="form-control" />
+                <input asp-for="BookingTime" class="form-control">
                 <span asp-validation-for="BookingTime" class="text-danger"></span>
             </div>
 
@@ -28,11 +28,11 @@
             </div>
 
            
-            <input type="hidden" asp-for="UserId" value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" />
+            <input type="hidden" asp-for="UserId" value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" >
 
            
             <div class="form-group" style="margin-top: 2vh;">
-                <input type="submit" value="Spara" class="btn btn-success" />
+                <input type="submit" value="Spara" class="btn btn-success" >
             </div>
         </form>
     </div>
