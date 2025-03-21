@@ -19,6 +19,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
 EXPOSE 80
 
+ENV ASPNETCORE_URLS=http://+:$PORT
 
 COPY --from=build /out ./
 
