@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Padelapp.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")] //admin
     public class PadelCourtController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -27,115 +27,45 @@ namespace Padelapp.Controllers
         {
             return View(await _context.PadelCourts.ToListAsync());
         }
+   
+//--------------------------Create-----------------------------------------------------//       
 
-        // GET: PadelCourt/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var padelCourt = await _context.PadelCourts
-                .FirstOrDefaultAsync(m => m.CourtId == id);
-            if (padelCourt == null)
-            {
-                return NotFound();
-            }
-
-            return View(padelCourt);
-        }
-
-        // GET: PadelCourt/Create
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")] //admin
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: PadelCourt/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "Admin")]
+        
+        [Authorize(Roles = "Admin")] //admin
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CourtId,CourtName,CourtType")] PadelCourt padelCourt)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(padelCourt);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                _context.Add(padelCourt);//lägg till
+                await _context.SaveChangesAsync(); //spara
+                return RedirectToAction(nameof(Index)); //tillbaka till vy
             }
             return View(padelCourt);
         }
 
-        // GET: PadelCourt/Edit/5
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var padelCourt = await _context.PadelCourts.FindAsync(id);
-            if (padelCourt == null)
-            {
-                return NotFound();
-            }
-            return View(padelCourt);
-        }
-
-        // POST: PadelCourt/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CourtId,CourtName,CourtType")] PadelCourt padelCourt)
-        {
-            if (id != padelCourt.CourtId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(padelCourt);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PadelCourtExists(padelCourt.CourtId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(padelCourt);
-        }
+//--------------------------Delete-----------------------------------------------------//       
 
         // GET: PadelCourt/Delete/5
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
+        [Authorize(Roles = "Admin")] //admin
+        public async Task<IActionResult> Delete(int? id){
+
+            if (id == null){//om id ej finns
                 return NotFound();
             }
 
+            //hämta padelbanan baserat id
             var padelCourt = await _context.PadelCourts
-                .FirstOrDefaultAsync(m => m.CourtId == id);
-            if (padelCourt == null)
-            {
+                .FirstOrDefaultAsync(m => m.CourtId == id); 
+
+            if (padelCourt == null){//om ej finns
                 return NotFound();
             }
 
@@ -143,20 +73,23 @@ namespace Padelapp.Controllers
         }
 
         // POST: PadelCourt/Delete/5
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")] //admin
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
+        public async Task<IActionResult> DeleteConfirmed(int id){
+
+            //hitta baserat på id
             var padelCourt = await _context.PadelCourts.FindAsync(id);
             if (padelCourt != null)
             {
-                _context.PadelCourts.Remove(padelCourt);
+                _context.PadelCourts.Remove(padelCourt);//ta bort
             }
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(); //spara
             return RedirectToAction(nameof(Index));
         }
+
+//--------------------------Bool-----------------------------------------------------//       
 
         private bool PadelCourtExists(int id)
         {
