@@ -32,7 +32,7 @@
             </td>
             
             <td>
-                @(item.Court != null ? Html.DisplayFor(modelItem => item.Court.CourtName) : "Hittas ej")
+                @(item.Court != null ? $"{item.Court.CourtName}-{item.Court.CourtType}" : "Hittas ej")
             </td>
             @if(isAdmin) { <!--om inloggad är admin -->
             <td>

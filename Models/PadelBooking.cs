@@ -12,19 +12,19 @@ namespace PadelserviceApp.Models
     public int BookingId { get; set; } //unik bokning
 
     [Required]
-    public DateTime BookingTime { get; set; }
+    public DateTime BookingTime { get; set; } //tid
 
     [Required]
-     public int CourtId { get; set; }
+     public int CourtId { get; set; } //bana (fk)
 
-     [ForeignKey("CourtId")]
+     [ForeignKey("CourtId")] 
      public PadelCourt? Court { get; set; }
 
 
      [Required]
-      public string? UserId { get; set; }
+      public string? UserId { get; set; } //användare (fk)
     
-     [ForeignKey("UserId")]
+     [ForeignKey("UserId")] 
       public IdentityUser? User { get; set; }
   }
 }
