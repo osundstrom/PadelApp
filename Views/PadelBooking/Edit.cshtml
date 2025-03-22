@@ -1,28 +1,34 @@
 @model PadelserviceApp.Models.PadelBooking
 
 @{
-    ViewData["Title"] = "Ändra";
+    ViewData["Title"] = "Ändra"; //sätter title
 }
 
 <h1>@ViewData["Title"]</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
+        <!-- Formulär redigera -->
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="BookingId" />
+
+            <!-- Välja datum -->
             <div class="form-group">
-                <label asp-for="BookingTime" class="control-label"></label>
+                <label asp-for="BookingTime" class="control-label">Datum</label>
                 <input asp-for="BookingTime" class="form-control" />
                 <span asp-validation-for="BookingTime" class="text-danger"></span>
             </div>
+
+            <!-- Välja bana -->
             <div class="form-group">
-                <label asp-for="CourtId" class="control-label"></label>
-                <select asp-for="CourtId" class="form-control" asp-items="ViewBag.CourtId"></select>
+                <label asp-for="CourtId" class="control-label">Bana</label>
+                <select asp-for="CourtId" class="form-control" asp-items="ViewBag.CourtId"></select> 
                 <span asp-validation-for="CourtId" class="text-danger"></span>
             </div>
+            <br>
             <div class="form-group">
-                 <input type="hidden" asp-for="UserId" />
+                 <input type="hidden" asp-for="UserId" /> <!-- hidden userid, ska ej ändras-->
             </div>
 
             <div class="form-group">

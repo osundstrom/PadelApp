@@ -12,6 +12,7 @@ using PadelserviceApp.Models;
 
 namespace Padelapp.Controllers
 {
+    [Authorize]
      public class PadelBookingController : Controller{
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;

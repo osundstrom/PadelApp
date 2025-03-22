@@ -1,13 +1,13 @@
 @model IEnumerable<PadelserviceApp.Models.PadelBooking>
 
 @{
-    ViewData["Title"] = "Profil";
+    ViewData["Title"] = "Profil"; //title
     var isAdmin = ViewBag.IsAdmin as bool? ?? false;
 }
 
 <h1>@ViewData["Title"]</h1>
-
-<table class="table">
+<div class="table-responsive">
+<table class="table" id="=tableProfil"> <!-- Visar alla bokade tider -->
     <thead>
         <tr>
             <th>
@@ -16,7 +16,7 @@
             <th>
                 Bana
             </th>
-            @if(isAdmin) {
+            @if(isAdmin) {<!--om inloggad är admin -->
             <th>
                 Användare
             </th>
@@ -27,24 +27,23 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            <td> <!--format dd/m hh:mm - hh:mm(+1) -->
                 @($"{item.BookingTime.Day}/{item.BookingTime.Month} {item.BookingTime:HH:mm} - {item.BookingTime.AddHours(1):HH:mm}")
             </td>
             
             <td>
                 @(item.Court != null ? Html.DisplayFor(modelItem => item.Court.CourtName) : "Hittas ej")
             </td>
-            @if(isAdmin) {
+            @if(isAdmin) { <!--om inloggad är admin -->
             <td>
                 @(item.User != null ? Html.DisplayFor(modelItem => item.User.UserName) : "Hittas ej")
             </td>
             }
             <td>
-                @if (isAdmin) 
-                    {
+                @if (isAdmin) { <!--om inloggad är admin -->
                         <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.BookingId">Ändra</a>
                     } 
-                <form asp-action="Delete" asp-route-id="@item.BookingId" method="post">
+                <form class="d-inline" asp-action="Delete" asp-route-id="@item.BookingId" method="post"> <!--Radera-->
                     <button type="submit" class="btn btn-danger">Radera</button>
                 </form>
             </td>
@@ -52,3 +51,4 @@
 }
     </tbody>
 </table>
+</div>

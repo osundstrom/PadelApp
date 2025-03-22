@@ -1,11 +1,12 @@
 @model IEnumerable<PadelserviceApp.Models.PadelCourt>
 
 @{
-    ViewData["Title"] = "Banor";
+    ViewData["Title"] = "Banor"; //title
 }
 
 <h1>Lägg till bana</h1>
 
+<!--Visar alla existerande banor -->
 <p>
     <a class="btn btn-success" asp-action="Create">Lägg till bana</a>
 </p>
@@ -32,7 +33,7 @@
             </td>
             <td>
                  <form asp-action="Delete" asp-route-id="@item.CourtId" method="post">
-                    <button type="submit" class="btn btn-danger">Radera</button>
+                    <button type="submit" class="btn btn-danger">Radera</button> <!--radera -->
                 </form>
             </td>
         </tr>
