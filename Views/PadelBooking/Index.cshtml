@@ -1,11 +1,11 @@
 @model IEnumerable<PadelserviceApp.Models.PadelBooking>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Profil";
     var isAdmin = ViewBag.IsAdmin as bool? ?? false;
 }
 
-<h1>Index</h1>
+<h1>@ViewData["Title"]</h1>
 
 <table class="table">
     <thead>
