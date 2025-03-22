@@ -5,7 +5,7 @@
     var isAdmin = ViewBag.IsAdmin as bool? ?? false;
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1>@ViewData["Title"]: @ViewBag.Username</h1>  <!-- Visar inloggad -->
 <div class="table-responsive">
 <table class="table" id="=tableProfil"> <!-- Visar alla bokade tider -->
     <thead>

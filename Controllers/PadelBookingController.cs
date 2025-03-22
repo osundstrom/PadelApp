@@ -36,6 +36,7 @@ namespace Padelapp.Controllers
         bool isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
 
         ViewBag.IsAdmin = isAdmin;//skickas till vy
+        ViewBag.Username = user.UserName;
 
         if (isAdmin) { //om är admin
            
