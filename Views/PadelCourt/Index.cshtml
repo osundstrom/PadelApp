@@ -4,19 +4,19 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Lägg till baka</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-success" asp-action="Create">Lägg till bana</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CourtName)
+                Banans namn
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CourtType)
+               Banans typ
             </th>
             <th></th>
         </tr>
@@ -31,9 +31,9 @@
                 @Html.DisplayFor(modelItem => item.CourtType)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.CourtId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CourtId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CourtId">Delete</a>
+                 <form asp-action="Delete" asp-route-id="@item.CourtId" method="post">
+                    <button type="submit" class="btn btn-danger">Radera</button>
+                </form>
             </td>
         </tr>
 }

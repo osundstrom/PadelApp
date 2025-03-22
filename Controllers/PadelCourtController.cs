@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PadelApp.Data;
 using PadelserviceApp.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Padelapp.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class PadelCourtController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -44,6 +47,7 @@ namespace Padelapp.Controllers
         }
 
         // GET: PadelCourt/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -52,6 +56,7 @@ namespace Padelapp.Controllers
         // POST: PadelCourt/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CourtId,CourtName,CourtType")] PadelCourt padelCourt)
@@ -66,6 +71,7 @@ namespace Padelapp.Controllers
         }
 
         // GET: PadelCourt/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,6 +90,7 @@ namespace Padelapp.Controllers
         // POST: PadelCourt/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CourtId,CourtName,CourtType")] PadelCourt padelCourt)
@@ -117,6 +124,7 @@ namespace Padelapp.Controllers
         }
 
         // GET: PadelCourt/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,6 +143,7 @@ namespace Padelapp.Controllers
         }
 
         // POST: PadelCourt/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
