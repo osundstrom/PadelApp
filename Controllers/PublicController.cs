@@ -19,7 +19,6 @@ public class PublicController : Controller
     {   
         //Hämtar alla banor samt deras tider
         var courts = _context.PadelCourts.Include(c => c.Booking)
-            .Where(c => date.HasValue && !c.Booking.Any(b => b.BookingTime.Date == date.Value.Date && b.BookingTime.Hour == date.Value.Hour ))
             .ToList();
 
         //viewData med valt datum.
@@ -27,7 +26,7 @@ public class PublicController : Controller
         return View(courts);
     }
 
-    [AllowAnonymous] //ej inloggad
+    [AllowAnonymous] //ej inloggade
     public IActionResult Index(){
         
         return View();
@@ -37,7 +36,7 @@ public class PublicController : Controller
     [HttpGet]
     public IActionResult AvailableTimes(int courtId, DateTime? date)
     {   
-        //Visar banan och dess lediga tider, courtid
+        //Hämta banan och dess bokade tider, courtid
         var court = _context.PadelCourts
             .Include(c => c.Booking)
             .FirstOrDefault(c => c.CourtId == courtId);
@@ -60,7 +59,7 @@ public class PublicController : Controller
         var allTimes =  new List<DateTime>(); 
 
 
-        //for loop för att displaya all tider. tider gåt att boka 9-22
+        //for loop för att displaya all tider, går att boka 9-22
         for (int i = 9; i < 23; i++) 
         {   
             //skapat objekt med valt timme och dag.
@@ -79,7 +78,7 @@ public class PublicController : Controller
     [Authorize]//måste vara inloggad
     public async Task<IActionResult> BookCourt(int courtId, DateTime date)
     {
-        //hämtar banan och dens tider 
+        //hämtar banan och dens aktiva bokningar
         var court = await _context.PadelCourts
             .Include(c => c.Booking)
             .FirstOrDefaultAsync(c => c.CourtId == courtId);

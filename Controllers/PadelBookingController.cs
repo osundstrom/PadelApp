@@ -12,7 +12,7 @@ using PadelserviceApp.Models;
 
 namespace Padelapp.Controllers
 {
-    [Authorize]
+    [Authorize] //inloggade
      public class PadelBookingController : Controller{
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
@@ -36,7 +36,7 @@ namespace Padelapp.Controllers
         bool isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
 
         ViewBag.IsAdmin = isAdmin;//skickas till vy
-        ViewBag.Username = user.UserName;
+        ViewBag.Username = user.UserName; // Skicka användaren
 
         if (isAdmin) { //om är admin
            
@@ -56,34 +56,7 @@ namespace Padelapp.Controllers
             return View(userBookings);
         }
     }
-
-    //-------------------------------Create------------------------------------------------------//    
-       [Authorize(Roles = "Admin")]
-        // GET: PadelBooking/Create
-        public IActionResult Create()
-        {
-            ViewData["CourtId"] = new SelectList(_context.Set<PadelCourt>(), "CourtId", "CourtName");
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
-        }
-
-        
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BookingId,BookingTime,CourtId,UserId")] PadelBooking padelBooking)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(padelBooking); //lägger till
-                await _context.SaveChangesAsync(); //sparar
-                return RedirectToAction(nameof(Index)); //tillbaka
-            }
-
-            ViewData["CourtId"] = new SelectList(_context.Set<PadelCourt>(), "CourtId", "CourtName", padelBooking.CourtId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", padelBooking.UserId);
-            return View(padelBooking);
-        }
-
+     
 //--------------------------------------Edit---------------------------------------------------------------------//
 
         // GET: PadelBooking/Edit/5
