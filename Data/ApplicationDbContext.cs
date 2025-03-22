@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PadelserviceApp.Models;
 
@@ -10,6 +10,9 @@ public class ApplicationDbContext : IdentityDbContext
         : base(options)
     {
     }
-    public DbSet<PadelBooking> PadelBookings {get; set; }
-    public DbSet<PadelCourt> PadelCourts {get; set; }
+
+public DbSet<PadelCourt> PadelCourts { get; set; }
+
+    // Other DbSets if necessary
+    public DbSet<PadelBooking> PadelBookings { get; set; }
 }

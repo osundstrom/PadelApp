@@ -7,7 +7,7 @@
 @if (SignInManager.IsSignedIn(User)){<!-- Om inloggad -->
     
     <li class="nav-item">
-        <a  class="btn btn-success me-2" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Profil</a>
+        <a class="btn btn-primary me-2" asp-controller="PadelBooking" asp-action="Index" title="Profil">Profil</a>
     </li>
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Public", new { area = "" })">

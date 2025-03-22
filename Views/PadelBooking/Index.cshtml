@@ -1,0 +1,52 @@
+@model IEnumerable<PadelserviceApp.Models.PadelBooking>
+
+@{
+    ViewData["Title"] = "Index";
+    var isAdmin = ViewBag.IsAdmin as bool? ?? false;
+}
+
+<h1>Index</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Datum
+            </th>
+            <th>
+                Bana
+            </th>
+            @if(isAdmin) {
+            <th>
+                Användare
+            </th>
+            }
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @($"{item.BookingTime.Day}/{item.BookingTime.Month} {item.BookingTime:HH:mm} - {item.BookingTime.AddHours(1):HH:mm}")
+            </td>
+            
+            <td>
+                @(item.Court != null ? Html.DisplayFor(modelItem => item.Court.CourtName) : "Hittas ej")
+            </td>
+            @if(isAdmin) {
+            <td>
+                @(item.User != null ? Html.DisplayFor(modelItem => item.User.UserName) : "Hittas ej")
+            </td>
+            }
+            <td>
+                @if (isAdmin) 
+                    {
+                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.BookingId">Ändra</a>
+                    } 
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.BookingId">Radera</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

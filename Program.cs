@@ -56,7 +56,7 @@ app.MapStaticAssets(); //statiska
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=public}/{action=Index}/{id?}")
+    pattern: "{controller=Public}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 
