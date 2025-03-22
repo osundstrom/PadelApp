@@ -1,20 +1,18 @@
 ﻿
 
 
-.imgHeader{
+Header{
   height: 15vh;
   margin-bottom: 2vh;
   width: 100vw;
-  border-image-repeat: none;
+  border-image-repeat: stretch;
   object-fit: cover;
   object-position: center;
   border-bottom: 1px solid black;
-  background-image: url("/Images/PadelHeader.jpg")
+  background-image: url("/Images/PadelHeader.jpg");
 }
 
-#navHeader{
-  margin-top: 1vh;
-}
+
 
 footer li{
   list-style: none;

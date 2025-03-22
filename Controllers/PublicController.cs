@@ -17,9 +17,8 @@ public class PublicController : Controller
     [AllowAnonymous] //tillgänglig ej inloggad
     public IActionResult Booking(DateTime? date)
     {   
-        //Hämtar alla banor samt deras tider
-        var courts = _context.PadelCourts.Include(c => c.Booking)
-            .ToList();
+        //Hämtar alla banor 
+        var courts = _context.PadelCourts.ToList();
 
         //viewData med valt datum.
         ViewData["oneDate"] = date;
@@ -54,21 +53,16 @@ public class PublicController : Controller
         //skickas till vyn
         ViewData["Court"] = court;
         ViewData["oneDate"] = date;
-
        
         var allTimes =  new List<DateTime>(); 
 
-
         //for loop för att displaya all tider, går att boka 9-22
-        for (int i = 9; i < 23; i++) 
-        {   
+        for (int i = 9; i < 23; i++) {   
             //skapat objekt med valt timme och dag.
             var bookingDate = date.Value.Date.AddHours(i);
             //lägger in allt i allTimes
             allTimes.Add(bookingDate);
-            
-            
-        }
+            }
         
 
         return View(allTimes);
@@ -76,8 +70,7 @@ public class PublicController : Controller
 
    
     [Authorize]//måste vara inloggad
-    public async Task<IActionResult> BookCourt(int courtId, DateTime date)
-    {
+    public async Task<IActionResult> BookCourt(int courtId, DateTime date){
         //hämtar banan och dens aktiva bokningar
         var court = await _context.PadelCourts
             .Include(c => c.Booking)
@@ -89,13 +82,8 @@ public class PublicController : Controller
              return RedirectToAction(nameof(Index));
         }
 
-        
-
         //Kollar om tiden är bokad
-        if (court.Booking.Any(b => 
-        b.BookingTime.Date == date.Date && //dag
-        b.BookingTime.Hour == date.Hour)) //timme
-        {   
+        if (court.Booking.Any(b => b.BookingTime.Date == date.Date && b.BookingTime.Hour == date.Hour)) {   
             return RedirectToAction(nameof(Index));
         }
 
@@ -107,7 +95,6 @@ public class PublicController : Controller
             BookingTime = date, //datum
             UserId = userID //användare
         };
-
         _context.PadelBookings.Add(booking); //lägg till bokning
         await _context.SaveChangesAsync(); //spara 
 
