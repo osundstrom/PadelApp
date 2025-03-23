@@ -12,7 +12,7 @@ namespace PadelserviceApp.Models
     public string? CourtName { get; set; }  //namn bana
 
     [Required]
-    public string? CourtType { get; set; } //tpy bana
+    public string? CourtType { get; set; } //typ bana
 
     [Required]
     public ICollection<PadelBooking> Booking { get; set; } = new List<PadelBooking>(); //lista över bokningar, 1 bana knan ha flea bokningar
