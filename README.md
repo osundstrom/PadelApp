@@ -1,8 +1,8 @@
 # Projekt DT191G - PAdelApp
 
 ## Info
-PadelApp använder sig av ASP.net MVC Core med Entity Framework (EF) för databashantering (SQLite) och Identity för hnatera användare.
-På hemsidan kan man skapa konotn, logga in både som admin och vanlig användare. Som användare kna man boka padel tider och radera 
+PadelApp använder sig av ASP.net MVC Core med Entity Framework (EF) för databashantering (SQLite) och Identity för hantera användare.
+På hemsidan kan man skapa konton, logga in både som admin och vanlig användare. Som användare kan man boka padel tider och radera 
 sina egna tider som admin kan man radera och redigera samtliga tider. Som admin går det även att lägga till fler banor. 
 
 I databasen (SQLite) finns det två egna Tabeller som ser ut enligt nedan (samt identity)
